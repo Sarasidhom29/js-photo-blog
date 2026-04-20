@@ -20,9 +20,10 @@ function creaCard(cards) {
     for (const card of cards) {
         cardCreate += `
         <div class="card">
-            <img src="./img/pin.svg" alt="immagine pin">
-            <img src="${card.url}" alt="immagine ${card.title}">
-            <h2> ${card.title} </h2>  
+            <img src="./img/pin.svg" class="card-pin" alt="immagine pin">
+            <img src="${card.url}" class="card-img" alt="immagine ${card.title}">
+            <h2 class="card-title"> ${card.title} </h2>  
+            <p class="card-text"> ${card.date} </p>
         </div>
         `
     }
@@ -35,21 +36,25 @@ function creaCard(cards) {
 const msgCaricamento = document.querySelector('#msg-caricamento');
 const msgErrore = document.querySelector('#msg-errore');
 
-
+//if x tscheck
 if (msgCaricamento !== null && msgErrore !== null) {
     msgCaricamento.innerHTML = 'Caricamento';
-
+    //creazione promessa fetch
     fetch(API_URL)
+        //estrazione contenuto promessa in json
         .then(response => {
             return response.json();
         })
+        //restituzione contenuto seconda promessa
         .then(json => {
             creaCard(json);
         })
+        //restituzione messaggio errore se presente
         .catch(error => {
             console.error(error);
             msgErrore.innerHTML = 'Si è verificato un errore';
         })
+        //azione da svolgere in entrambi i casi (errore/successo)
         .finally(() => {
             msgCaricamento.innerHTML = '';
         })
